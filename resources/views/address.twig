@@ -1,0 +1,16 @@
+{% extends layout('checkout') %}
+
+{% block content %}
+    <div id="checkout">
+
+        <h2>Checkout</h2>
+
+        <br><br>
+
+        {{ form('checkout.address')
+        .entry(checkout.order_id)
+        .successMessage(false)
+        .redirect('checkout/shipping')|raw }}
+
+    </div>
+{% endblock %}

@@ -1,0 +1,9 @@
+{
+    "name": "anomaly/basic_checkout-extension",
+    "type": "streams-addon",
+    "autoload": {
+        "psr-4": {
+            "Anomaly\\BasicCheckoutExtension\\": "src/"
+        }
+    }
+}
