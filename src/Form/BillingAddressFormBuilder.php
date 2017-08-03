@@ -4,13 +4,13 @@ use Anomaly\OrdersModule\Order\OrderModel;
 use Anomaly\Streams\Platform\Ui\Form\FormBuilder;
 
 /**
- * Class AddressFormBuilder
+ * Class BillingAddressFormBuilder
  *
  * @link   http://pyrocms.com/
  * @author PyroCMS, Inc. <support@pyrocms.com>
  * @author Ryan Thompson <ryan@pyrocms.com>
  */
-class AddressFormBuilder extends FormBuilder
+class BillingAddressFormBuilder extends FormBuilder
 {
 
     /**
@@ -26,41 +26,26 @@ class AddressFormBuilder extends FormBuilder
      * @var array
      */
     protected $fields = [
-        'shipping_first_name'     => [
+        'billing_street_address' => [
             'required' => true,
         ],
-        'shipping_last_name'      => [
+        'billing_city'           => [
             'required' => true,
         ],
-        'shipping_street_address' => [
-            'required' => true,
-        ],
-        'shipping_city'           => [
-            'required' => true,
-        ],
-        'shipping_state'          => [
+        'billing_state'          => [
             'required' => true,
             'config'   => [
                 'mode' => 'dropdown',
             ],
         ],
-        'shipping_postal_code'    => [
+        'billing_postal_code'    => [
             'required' => true,
         ],
-        'shipping_country'        => [
+        'billing_country'        => [
             'required' => true,
             'config'   => [
                 'mode' => 'dropdown',
             ],
         ],
-    ];
-
-    /**
-     * The form buttons.
-     *
-     * @var array
-     */
-    protected $actions = [
-        'submit',
     ];
 }

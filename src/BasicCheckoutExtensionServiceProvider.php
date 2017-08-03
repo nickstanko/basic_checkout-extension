@@ -1,7 +1,7 @@
 <?php namespace Anomaly\BasicCheckoutExtension;
 
-use Anomaly\BasicCheckoutExtension\Form\AddressFormBuilder;
 use Anomaly\BasicCheckoutExtension\Form\BillingFormBuilder;
+use Anomaly\BasicCheckoutExtension\Form\CustomerFormBuilder;
 use Anomaly\BasicCheckoutExtension\Form\ShippingFormBuilder;
 use Anomaly\Streams\Platform\Addon\AddonServiceProvider;
 
@@ -21,7 +21,7 @@ class BasicCheckoutExtensionServiceProvider extends AddonServiceProvider
      * @var array
      */
     protected $bindings = [
-        'checkout.address'  => AddressFormBuilder::class,
+        'checkout.customer' => CustomerFormBuilder::class,
         'checkout.shipping' => ShippingFormBuilder::class,
         'checkout.billing'  => BillingFormBuilder::class,
     ];

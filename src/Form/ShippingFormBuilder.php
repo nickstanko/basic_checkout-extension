@@ -1,5 +1,8 @@
 <?php namespace Anomaly\BasicCheckoutExtension\Form;
 
+use Anomaly\OrdersModule\Order\OrderProcessor;
+use Anomaly\Streams\Platform\Ui\Form\Form;
+use Anomaly\Streams\Platform\Ui\Form\FormCollection;
 use Anomaly\Streams\Platform\Ui\Form\Multiple\MultipleFormBuilder;
 
 /**
@@ -21,11 +24,19 @@ class ShippingFormBuilder extends MultipleFormBuilder
         'submit',
     ];
 
-    /**
-     * Fired when ready to build.
-     */
+    public function __construct(Form $form, FormCollection $forms)
+    {
+        parent::__construct($form, $forms);
+
+        $this->addForm('shipment', app(ShipmentFormBuilder::class));
+    }
+
     public function onReady()
     {
-        $this->addForm('shipment', app(ShipmentFormBuilder::class));
+        $this->forms->map(
+            function ($form) {
+                $form->setOption('order_id', $this->getEntry());
+            }
+        );
     }
 }

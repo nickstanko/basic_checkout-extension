@@ -8,11 +8,11 @@ use Anomaly\PaymentsModule\Payment\PaymentModel;
 use Anomaly\Streams\Platform\Message\MessageBag;
 use Illuminate\Session\Store;
 
-class BillingFormHandler
+class PaymentFormHandler
 {
 
     public function handle(
-        BillingFormBuilder $builder,
+        PaymentFormBuilder $builder,
         CheckoutRepositoryInterface $checkouts,
         MessageBag $messages,
         Store $session

@@ -1,7 +1,8 @@
 <?php namespace Anomaly\BasicCheckoutExtension\Form;
 
-use Anomaly\PaymentsModule\Card\Support\SelectFieldType\CardTypes;
-use Anomaly\Streams\Platform\Ui\Form\FormBuilder;
+use Anomaly\Streams\Platform\Ui\Form\Form;
+use Anomaly\Streams\Platform\Ui\Form\FormCollection;
+use Anomaly\Streams\Platform\Ui\Form\Multiple\MultipleFormBuilder;
 
 /**
  * Class BillingFormBuilder
@@ -10,44 +11,29 @@ use Anomaly\Streams\Platform\Ui\Form\FormBuilder;
  * @author PyroCMS, Inc. <support@pyrocms.com>
  * @author Ryan Thompson <ryan@pyrocms.com>
  */
-class BillingFormBuilder extends FormBuilder
+class BillingFormBuilder extends MultipleFormBuilder
 {
 
     /**
-     * The form fields.
+     * The form buttons.
      *
      * @var array
      */
-    protected $fields = [
-        'number'           => [
-            'required' => true,
-            'type'     => 'anomaly.field_type.text',
-        ],
-        'expiration_month' => [
-            'required' => true,
-            'type'     => 'anomaly.field_type.integer',
-            'rules'    => [
-                'date_format:n',
-            ],
-        ],
-        'expiration_year'  => [
-            'required' => true,
-            'type'     => 'anomaly.field_type.integer',
-            'rules'    => [
-                'date_format:Y',
-            ],
-        ],
-        'type'             => [
-            'required' => true,
-            'type'     => 'anomaly.field_type.select',
-            'config'   => [
-                'handler' => CardTypes::class,
-            ],
-        ],
-        'security_code'    => [
-            'required' => true,
-            'type'     => 'anomaly.field_type.integer',
-        ],
+    protected $actions = [
+        'submit',
     ];
 
+    public function __construct(Form $form, FormCollection $forms)
+    {
+        parent::__construct($form, $forms);
+
+        $this->forms->add('address', app(BillingAddressFormBuilder::class));
+        $this->forms->add('payment', app(PaymentFormBuilder::class));
+    }
+
+    public function onReady()
+    {
+        $this->forms->get('address')->setEntry($this->getEntry());
+        $this->forms->get('payment')->setOption('order_id', $this->getEntry());
+    }
 }

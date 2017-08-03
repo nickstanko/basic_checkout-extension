@@ -5,5 +5,12 @@
 
         <h2>Checkout [billing]</h2>
 
+        <br><br>
+
+        {{ form('checkout.billing')
+        .entry(checkout.order_id)
+        .successMessage(false)
+        .redirect('checkout/complete')|raw }}
+
     </section>
 {% endblock %}

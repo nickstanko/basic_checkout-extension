@@ -5,7 +5,9 @@
 
         <h2>Checkout</h2>
 
-        {{ form('checkout.address')
+        <br><br>
+
+        {{ form('checkout.customer')
         .entry(checkout.order_id)
         .successMessage(false)
         .redirect('checkout/shipping')|raw }}
