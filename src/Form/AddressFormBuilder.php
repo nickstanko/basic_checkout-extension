@@ -26,33 +26,41 @@ class AddressFormBuilder extends FormBuilder
      * @var array
      */
     protected $fields = [
-        'postal_code' => [
+        'shipping_first_name'     => [
             'required' => true,
         ],
-        'first_name'  => [
+        'shipping_last_name'      => [
             'required' => true,
         ],
-        'last_name'   => [
+        'shipping_street_address' => [
             'required' => true,
         ],
-        'address1'    => [
+        'shipping_city'           => [
             'required' => true,
         ],
-        'address2',
-        'country'     => [
-            'required' => true,
-            'config'   => [
-                'mode' => 'dropdown',
-            ],
-        ],
-        'state'       => [
+        'shipping_state'          => [
             'required' => true,
             'config'   => [
                 'mode' => 'dropdown',
             ],
         ],
-        'city'        => [
+        'shipping_postal_code'    => [
             'required' => true,
         ],
+        'shipping_country'        => [
+            'required' => true,
+            'config'   => [
+                'mode' => 'dropdown',
+            ],
+        ],
+    ];
+
+    /**
+     * The form buttons.
+     *
+     * @var array
+     */
+    protected $actions = [
+        'submit',
     ];
 }

@@ -16,6 +16,17 @@ class BasicCheckoutExtensionServiceProvider extends AddonServiceProvider
 {
 
     /**
+     * The addon bindings.
+     *
+     * @var array
+     */
+    protected $bindings = [
+        'checkout.address'  => AddressFormBuilder::class,
+        'checkout.shipping' => ShippingFormBuilder::class,
+        'checkout.billing'  => BillingFormBuilder::class,
+    ];
+
+    /**
      * The addon routes.
      *
      * @var array
@@ -25,16 +36,5 @@ class BasicCheckoutExtensionServiceProvider extends AddonServiceProvider
         'checkout/shipping'      => 'Anomaly\BasicCheckoutExtension\Http\Controller\CheckoutController@shipping',
         'checkout/billing'       => 'Anomaly\BasicCheckoutExtension\Http\Controller\CheckoutController@billing',
         'checkout/complete/{id}' => 'Anomaly\BasicCheckoutExtension\Http\Controller\CheckoutController@complete',
-    ];
-
-    /**
-     * The addon bindings.
-     *
-     * @var array
-     */
-    protected $bindings = [
-        'checkout.address'  => AddressFormBuilder::class,
-        'checkout.shipping' => ShippingFormBuilder::class,
-        'checkout.billing'  => BillingFormBuilder::class,
     ];
 }

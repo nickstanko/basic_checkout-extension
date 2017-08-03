@@ -1,7 +1,6 @@
 <?php namespace Anomaly\BasicCheckoutExtension\Form;
 
-use Anomaly\OrdersModule\Order\OrderModel;
-use Anomaly\Streams\Platform\Ui\Form\FormBuilder;
+use Anomaly\Streams\Platform\Ui\Form\Multiple\MultipleFormBuilder;
 
 /**
  * Class ShippingFormBuilder
@@ -10,24 +9,23 @@ use Anomaly\Streams\Platform\Ui\Form\FormBuilder;
  * @author PyroCMS, Inc. <support@pyrocms.com>
  * @author Ryan Thompson <ryan@pyrocms.com>
  */
-class ShippingFormBuilder extends FormBuilder
+class ShippingFormBuilder extends MultipleFormBuilder
 {
 
     /**
-     * The form model.
-     *
-     * @var string
-     */
-    protected $model = OrderModel::class;
-
-    /**
-     * The form fields.
+     * The form buttons.
      *
      * @var array
      */
-    protected $fields = [
-        'shipping_method' => [
-            'required' => true,
-        ],
+    protected $actions = [
+        'submit',
     ];
+
+    /**
+     * Fired when ready to build.
+     */
+    public function onReady()
+    {
+        $this->addForm('shipment', app(ShipmentFormBuilder::class));
+    }
 }
