@@ -25,10 +25,10 @@ class ShipmentMethods
     /**
      * Handle the shipping options.
      *
-     * @param SelectFieldType $fieldType
+     * @param SelectFieldType  $fieldType
      * @param ShippingResolver $resolver
-     * @param ServiceManager $manager
-     * @param Currency $currency
+     * @param ServiceManager   $manager
+     * @param Currency         $currency
      */
     public function handle(
         SelectFieldType $fieldType,
@@ -47,23 +47,30 @@ class ShipmentMethods
         // @todo this should be an order item
         $item = $this->dispatch(new GetCart())->getItems()->first()->entry;
 
-        $fieldType->setOptions(
-            array_combine(
-                $methods->map(
-                    function ($method) use ($item, $address) {
+        $options = array_combine(
+            $methods->map(
+                function ($method) use ($item, $address) {
 
-                        /* @var MethodInterface $method */
-                        return $method->getId();
-                    }
-                )->all(),
-                $methods->map(
-                    function ($method) use ($item, $address, $currency) {
+                    /* @var MethodInterface $method */
+                    return $method->getId();
+                }
+            )->all(),
+            $methods->map(
+                function ($method) use ($item, $address, $currency) {
 
-                        /* @var MethodInterface $method */
-                        return $method->getName() . ' (' . $currency->format($method->quote($item, $address)) . ')';
-                    }
-                )->all()
-            )
+                    /* @var MethodInterface $method */
+                    return $method->getName() . ' (' . $currency->format($method->quote($item, $address)) . ')';
+                }
+            )->all()
         );
+
+        $options = array_filter(
+            $options,
+            function ($value) {
+                return ($value !== null && $value !== false && $value !== '');
+            }
+        );
+
+        $fieldType->setOptions($options);
     }
 }
