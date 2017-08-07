@@ -63,7 +63,7 @@ class CheckoutController extends PublicController
 
         $this->dispatch(new ReleaseCart());
 
-        $checkout = $checkouts->findByStrId($this->route->getParameter('id'));
+        $checkout = $checkouts->findByStrId($this->route->parameter('id'));
 
         return $this->view->make('anomaly.extension.basic_checkout::complete', compact('checkout'));
     }
