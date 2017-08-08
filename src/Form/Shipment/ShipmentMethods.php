@@ -2,12 +2,14 @@
 
 use Anomaly\CartsModule\Cart\Command\GetCart;
 use Anomaly\CheckoutsModule\Checkout\CheckoutService;
+use Anomaly\OrdersModule\Order\Contract\OrderInterface;
 use Anomaly\SelectFieldType\SelectFieldType;
 use Anomaly\ShippingModule\Method\Contract\MethodInterface;
 use Anomaly\ShippingModule\Shipping\ShippingResolver;
 use Anomaly\StoreModule\Contract\ShippableInterface;
 use Anomaly\StoreModule\Service\ServiceManager;
 use Anomaly\Streams\Platform\Support\Currency;
+use Anomaly\Streams\Platform\Support\Decorator;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
 /**
@@ -25,10 +27,10 @@ class ShipmentMethods
     /**
      * Handle the shipping options.
      *
-     * @param SelectFieldType  $fieldType
+     * @param SelectFieldType $fieldType
      * @param ShippingResolver $resolver
-     * @param ServiceManager   $manager
-     * @param Currency         $currency
+     * @param ServiceManager $manager
+     * @param Currency $currency
      */
     public function handle(
         SelectFieldType $fieldType,
@@ -39,13 +41,14 @@ class ShipmentMethods
         /* @var CheckoutService $checkout */
         $checkout = $manager->make('checkout');
 
+        /* @var OrderInterface $order */
         $orderInterface = $checkout->order();
 
         $methods = $resolver->resolve($address = $orderInterface->getShippingAddress());
 
         /* @var ShippableInterface $item */
         // @todo this should be an order item
-        $item = $this->dispatch(new GetCart())->getItems()->first()->entry;
+        $item = (new Decorator())->undecorate($this->dispatch(new GetCart())->getItems()->first()->entry);
 
         $options = array_combine(
             $methods->map(
@@ -58,18 +61,31 @@ class ShipmentMethods
             $methods->map(
                 function ($method) use ($item, $address, $currency) {
 
-                    /* @var MethodInterface $method */
-                    return $method->getName() . ' (' . $currency->format($method->quote($item, $address)) . ')';
+                    try {
+                        /* @var MethodInterface $method */
+                        return [
+                            'name'  => $method->getName(),
+                            'quote' => $currency->normalize($method->quote($item, $address)),
+                        ];
+                    } catch (\Exception $exception) {
+                        return [
+                            'name' => $method->getName(),
+                        ];
+                    }
                 }
             )->all()
         );
 
         $options = array_filter(
             $options,
-            function ($value) {
-                return ($value !== null && $value !== false && $value !== '');
+            function (array $option) {
+                return isset($option['quote']) && !empty($option['quote']);
             }
         );
+
+        foreach ($options as &$option) {
+            $option = $option['name'] . '(' . $currency->format($option['quote']) . ')';
+        }
 
         $fieldType->setOptions($options);
     }

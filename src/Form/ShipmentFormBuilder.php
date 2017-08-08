@@ -9,6 +9,7 @@ use Anomaly\OrdersModule\Shipment\ShipmentModel;
 use Anomaly\ShippingModule\Method\Contract\MethodInterface;
 use Anomaly\ShippingModule\Method\MethodModel;
 use Anomaly\StoreModule\Contract\ShippableInterface;
+use Anomaly\Streams\Platform\Support\Decorator;
 use Anomaly\Streams\Platform\Ui\Form\FormBuilder;
 
 /**
@@ -47,7 +48,7 @@ class ShipmentFormBuilder extends FormBuilder
 
         /* @var ShippableInterface $item */
         // @todo this should be an order item
-        $item = $this->dispatch(new GetCart())->getItems()->first()->entry;
+        $item = (new Decorator())->undecorate($this->dispatch(new GetCart())->getItems()->first()->entry);
 
         /* @var MethodInterface $method */
         $method = MethodModel::find($this->getPostValue('method'));
