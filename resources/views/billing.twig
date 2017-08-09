@@ -10,7 +10,7 @@
         {{ form('checkout.billing')
         .entry(checkout.cart_id)
         .successMessage(false)
-        .redirect('checkout/complete')|raw }}
+        .redirect('checkout/complete/' ~ checkout.str_id.value)|raw }}
 
     </section>
 {% endblock %}

@@ -40,7 +40,7 @@ class PaymentFormHandler
         try {
             if ($result = $payment->purchase()) {
 
-                (new OrderModel(
+                $order = OrderModel::create(
                     [
                         'tax'        => $cart->getTax(),
                         'total'      => $cart->getTotal(),
@@ -49,7 +49,10 @@ class PaymentFormHandler
                         'first_name' => $cart->first_name,
                         'last_name'  => $cart->last_name,
                     ]
-                ))->save();
+                );
+
+                $checkout->order = $order;
+                $checkout->save();
 
                 $builder->setFormResponse(redirect('checkout/complete/' . $checkout->getStrId()));
 

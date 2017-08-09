@@ -1,7 +1,6 @@
 <?php namespace Anomaly\BasicCheckoutExtension\Http\Controller;
 
 use Anomaly\CartsModule\Cart\Command\GetCart;
-use Anomaly\CartsModule\Cart\Command\ReleaseCart;
 use Anomaly\CheckoutsModule\Checkout\Contract\CheckoutRepositoryInterface;
 use Anomaly\Streams\Platform\Http\Controller\PublicController;
 use Illuminate\Session\Store;
