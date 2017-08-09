@@ -1,5 +1,6 @@
 <?php namespace Anomaly\BasicCheckoutExtension\Http\Controller;
 
+use Anomaly\CartsModule\Cart\Command\GetCart;
 use Anomaly\CartsModule\Cart\Command\ReleaseCart;
 use Anomaly\CheckoutsModule\Checkout\Contract\CheckoutRepositoryInterface;
 use Anomaly\Streams\Platform\Http\Controller\PublicController;
@@ -61,7 +62,9 @@ class CheckoutController extends PublicController
     {
         $session->forget('checkout');
 
-        //$this->dispatch(new ReleaseCart());
+        $cart = $this->dispatch(new GetCart());
+
+        $cart->delete();
 
         $checkout = $checkouts->findByStrId($this->route->parameter('id'));
 
