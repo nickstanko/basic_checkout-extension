@@ -26,22 +26,22 @@ class BillingAddressFormBuilder extends FormBuilder
      * @var array
      */
     protected $fields = [
-        'billing_street_address' => [
+        'street_address' => [
             'required' => true,
         ],
-        'billing_city'           => [
+        'city'           => [
             'required' => true,
         ],
-        'billing_state'          => [
+        'state'          => [
             'required' => true,
             'config'   => [
                 'mode' => 'dropdown',
             ],
         ],
-        'billing_postal_code'    => [
+        'postal_code'    => [
             'required' => true,
         ],
-        'billing_country'        => [
+        'country'        => [
             'required' => true,
             'config'   => [
                 'mode' => 'dropdown',

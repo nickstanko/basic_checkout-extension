@@ -25,7 +25,7 @@ class PaymentFormHandler
             array_merge(
                 [
                     'account'  => AccountModel::where('slug', 'stripe')->first(),
-                    'amount'   => $checkout->getCart()->total(),
+                    'amount'   => $checkout->getCart()->getTotal(),
                     'currency' => 'USD',
                 ],
                 $builder->getFormValues()->all()

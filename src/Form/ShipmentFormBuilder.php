@@ -1,15 +1,12 @@
 <?php namespace Anomaly\BasicCheckoutExtension\Form;
 
 use Anomaly\BasicCheckoutExtension\Form\Shipment\ShipmentMethods;
-use Anomaly\CartsModule\Cart\CartModel;
 use Anomaly\CartsModule\Cart\Command\GetCart;
+use Anomaly\CartsModule\Cart\Command\ProcessCart;
 use Anomaly\CartsModule\Cart\Contract\CartInterface;
 use Anomaly\CartsModule\Modifier\ModifierModel;
-use Anomaly\OrdersModule\Shipment\ShipmentModel;
 use Anomaly\ShippingModule\Method\Contract\MethodInterface;
 use Anomaly\ShippingModule\Method\MethodModel;
-use Anomaly\StoreModule\Contract\ShippableInterface;
-use Anomaly\Streams\Platform\Support\Decorator;
 use Anomaly\Streams\Platform\Ui\Form\FormBuilder;
 
 /**
@@ -21,8 +18,6 @@ use Anomaly\Streams\Platform\Ui\Form\FormBuilder;
  */
 class ShipmentFormBuilder extends FormBuilder
 {
-
-    protected $model = ShipmentModel::class;
 
     /**
      * The form fields.
@@ -41,26 +36,24 @@ class ShipmentFormBuilder extends FormBuilder
 
     public function onSaving()
     {
-        $entry = $this->getFormEntry();
-
         /* @var CartInterface $cart */
-        $cart = CartModel::find($this->getOption('cart_id'));
-
-        /* @var ShippableInterface $item */
-        // @todo this should be an cart item
-        $item = (new Decorator())->undecorate($this->dispatch(new GetCart())->getItems()->first()->entry);
+        $cart = $this->dispatch(new GetCart());
 
         /* @var MethodInterface $method */
         $method = MethodModel::find($this->getPostValue('method'));
 
+        // Delete old shipping charges.
+        ModifierModel::where('type', 'shipping')->where('cart_id', $cart->getId())->delete();
+
         (new ModifierModel(
             [
                 'type'  => 'shipping',
-                'value' => $method->quote($item, $cart->getShippingAddress()),
-                //'entry' => $method,
+                'value' => $method->quote($cart->getItems()->first(), $cart->getShippingAddress()),
                 'cart'  => $cart,
             ]
         ))->save();
+
+        $this->dispatch(new ProcessCart($cart));
 
         $cart->save();
     }

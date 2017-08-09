@@ -61,7 +61,7 @@ class CheckoutController extends PublicController
     {
         $session->forget('checkout');
 
-        $this->dispatch(new ReleaseCart());
+        //$this->dispatch(new ReleaseCart());
 
         $checkout = $checkouts->findByStrId($this->route->parameter('id'));
 
