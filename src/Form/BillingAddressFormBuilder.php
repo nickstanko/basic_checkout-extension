@@ -1,6 +1,6 @@
 <?php namespace Anomaly\BasicCheckoutExtension\Form;
 
-use Anomaly\OrdersModule\Order\OrderModel;
+use Anomaly\CartsModule\Cart\CartModel;
 use Anomaly\Streams\Platform\Ui\Form\FormBuilder;
 
 /**
@@ -18,7 +18,7 @@ class BillingAddressFormBuilder extends FormBuilder
      *
      * @var string
      */
-    protected $model = OrderModel::class;
+    protected $model = CartModel::class;
 
     /**
      * The form fields.

@@ -34,6 +34,6 @@ class BillingFormBuilder extends MultipleFormBuilder
     public function onReady()
     {
         $this->forms->get('address')->setEntry($this->getEntry());
-        $this->forms->get('payment')->setOption('order_id', $this->getEntry());
+        $this->forms->get('payment')->setOption('cart_id', $this->getEntry());
     }
 }

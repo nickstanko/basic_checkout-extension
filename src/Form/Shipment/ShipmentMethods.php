@@ -2,7 +2,7 @@
 
 use Anomaly\CartsModule\Cart\Command\GetCart;
 use Anomaly\CheckoutsModule\Checkout\CheckoutService;
-use Anomaly\OrdersModule\Order\Contract\OrderInterface;
+use Anomaly\CartsModule\Cart\Contract\CartInterface;
 use Anomaly\SelectFieldType\SelectFieldType;
 use Anomaly\ShippingModule\Method\Contract\MethodInterface;
 use Anomaly\ShippingModule\Shipping\ShippingResolver;
@@ -41,13 +41,13 @@ class ShipmentMethods
         /* @var CheckoutService $checkout */
         $checkout = $manager->make('checkout');
 
-        /* @var OrderInterface $order */
-        $orderInterface = $checkout->order();
+        /* @var CartInterface $cart */
+        $cartInterface = $checkout->cart();
 
-        $methods = $resolver->resolve($address = $orderInterface->getShippingAddress());
+        $methods = $resolver->resolve($address = $cartInterface->getShippingAddress());
 
         /* @var ShippableInterface $item */
-        // @todo this should be an order item
+        // @todo this should be an cart item
         $item = (new Decorator())->undecorate($this->dispatch(new GetCart())->getItems()->first()->entry);
 
         $options = array_combine(

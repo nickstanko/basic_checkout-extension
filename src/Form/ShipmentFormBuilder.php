@@ -1,10 +1,10 @@
 <?php namespace Anomaly\BasicCheckoutExtension\Form;
 
 use Anomaly\BasicCheckoutExtension\Form\Shipment\ShipmentMethods;
+use Anomaly\CartsModule\Cart\CartModel;
 use Anomaly\CartsModule\Cart\Command\GetCart;
-use Anomaly\OrdersModule\Modifier\ModifierModel;
-use Anomaly\OrdersModule\Order\Contract\OrderInterface;
-use Anomaly\OrdersModule\Order\OrderModel;
+use Anomaly\CartsModule\Cart\Contract\CartInterface;
+use Anomaly\CartsModule\Modifier\ModifierModel;
 use Anomaly\OrdersModule\Shipment\ShipmentModel;
 use Anomaly\ShippingModule\Method\Contract\MethodInterface;
 use Anomaly\ShippingModule\Method\MethodModel;
@@ -43,11 +43,11 @@ class ShipmentFormBuilder extends FormBuilder
     {
         $entry = $this->getFormEntry();
 
-        /* @var OrderInterface $order */
-        $order = OrderModel::find($this->getOption('order_id'));
+        /* @var CartInterface $cart */
+        $cart = CartModel::find($this->getOption('cart_id'));
 
         /* @var ShippableInterface $item */
-        // @todo this should be an order item
+        // @todo this should be an cart item
         $item = (new Decorator())->undecorate($this->dispatch(new GetCart())->getItems()->first()->entry);
 
         /* @var MethodInterface $method */
@@ -56,13 +56,13 @@ class ShipmentFormBuilder extends FormBuilder
         (new ModifierModel(
             [
                 'type'  => 'shipping',
-                'value' => $method->quote($item, $order->getShippingAddress()),
+                'value' => $method->quote($item, $cart->getShippingAddress()),
                 //'entry' => $method,
-                'order' => $order,
+                'cart'  => $cart,
             ]
         ))->save();
 
-        $order->save();
+        $cart->save();
     }
 
 }

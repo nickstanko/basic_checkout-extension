@@ -1,6 +1,6 @@
 <?php namespace Anomaly\BasicCheckoutExtension\Form;
 
-use Anomaly\OrdersModule\Order\OrderProcessor;
+use Anomaly\CartsModule\Cart\CartProcessor;
 use Anomaly\Streams\Platform\Ui\Form\Form;
 use Anomaly\Streams\Platform\Ui\Form\FormCollection;
 use Anomaly\Streams\Platform\Ui\Form\Multiple\MultipleFormBuilder;
@@ -35,7 +35,7 @@ class ShippingFormBuilder extends MultipleFormBuilder
     {
         $this->forms->map(
             function ($form) {
-                $form->setOption('order_id', $this->getEntry());
+                $form->setOption('cart_id', $this->getEntry());
             }
         );
     }
