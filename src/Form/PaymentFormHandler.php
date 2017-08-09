@@ -1,7 +1,9 @@
 <?php namespace Anomaly\BasicCheckoutExtension\Form;
 
+use Anomaly\CartsModule\Cart\Contract\CartInterface;
 use Anomaly\CheckoutsModule\Checkout\Contract\CheckoutInterface;
 use Anomaly\CheckoutsModule\Checkout\Contract\CheckoutRepositoryInterface;
+use Anomaly\OrdersModule\Order\OrderModel;
 use Anomaly\PaymentsModule\Account\AccountModel;
 use Anomaly\PaymentsModule\Payment\Contract\PaymentInterface;
 use Anomaly\PaymentsModule\Payment\PaymentModel;
@@ -20,6 +22,9 @@ class PaymentFormHandler
         /* @var CheckoutInterface $checkout */
         $checkout = $checkouts->findByStrId($session->get('checkout'));
 
+        /* @var CartInterface $cart */
+        $cart = $checkout->getCart();
+
         /* @var PaymentInterface $payment */
         $payment = (new PaymentModel(
             array_merge(
@@ -34,6 +39,17 @@ class PaymentFormHandler
 
         try {
             if ($result = $payment->purchase()) {
+
+                (new OrderModel(
+                    [
+                        'tax'        => $cart->getTax(),
+                        'total'      => $cart->getTotal(),
+                        'subtotal'   => $cart->getSubtotal(),
+                        'discounts'  => $cart->getDiscounts(),
+                        'first_name' => $cart->first_name,
+                        'last_name'  => $cart->last_name,
+                    ]
+                ))->save();
 
                 $builder->setFormResponse(redirect('checkout/complete/' . $checkout->getStrId()));
 
