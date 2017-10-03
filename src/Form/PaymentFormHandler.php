@@ -64,7 +64,7 @@ class PaymentFormHandler
             }
         } catch (\Exception $e) {
 
-            $messages->error('The card is expired!');
+            $messages->error($e->getMessage());
 
             $builder->setSave(false);
 

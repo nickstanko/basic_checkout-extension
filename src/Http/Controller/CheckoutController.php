@@ -57,6 +57,13 @@ class CheckoutController extends PublicController
         return $this->view->make('anomaly.extension.basic_checkout::billing', compact('checkout'));
     }
 
+    /**
+     * Complete the checkout.
+     *
+     * @param Store $session
+     * @param CheckoutRepositoryInterface $checkouts
+     * @return \Illuminate\Contracts\View\View|mixed
+     */
     public function complete(Store $session, CheckoutRepositoryInterface $checkouts)
     {
         $session->forget('checkout');
