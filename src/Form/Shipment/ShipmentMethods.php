@@ -7,10 +7,10 @@ use Anomaly\SelectFieldType\SelectFieldType;
 use Anomaly\ShippingModule\Method\Contract\MethodInterface;
 use Anomaly\ShippingModule\Shipping\ShippingResolver;
 use Anomaly\ShippingModule\Shipping\Contract\ShippableInterface;
-use Anomaly\StoreModule\Service\ServiceManager;
 use Anomaly\Streams\Platform\Support\Currency;
 use Anomaly\Streams\Platform\Support\Decorator;
 use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Session\Store;
 
 /**
  * Class ShipmentMethods
@@ -35,11 +35,11 @@ class ShipmentMethods
     public function handle(
         SelectFieldType $fieldType,
         ShippingResolver $resolver,
-        ServiceManager $manager,
+        Store $session,
         Currency $currency
     ) {
         /* @var CheckoutService $checkout */
-        $checkout = $manager->make('checkout');
+        $checkout = $session->get('checkout');
 
         /* @var CartInterface $cart */
         $cartInterface = $checkout->cart();
