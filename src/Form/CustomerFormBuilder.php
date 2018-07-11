@@ -27,27 +27,34 @@ class CustomerFormBuilder extends FormBuilder
      */
     protected $fields = [
         'shipping_first_name'     => [
+            'type' => 'anomaly.field_type.text',
             'required' => true,
         ],
         'shipping_last_name'      => [
+            'type' => 'anomaly.field_type.text',
             'required' => true,
         ],
         'shipping_street_address' => [
+            'type' => 'anomaly.field_type.text',
             'required' => true,
         ],
         'shipping_city'           => [
+            'type' => 'anomaly.field_type.text',
             'required' => true,
         ],
         'shipping_state'          => [
+            'type' => 'anomaly.field_type.state',
             'required' => true,
             'config'   => [
                 'mode' => 'dropdown',
             ],
         ],
         'shipping_postal_code'    => [
+            'type' => 'anomaly.field_type.text',
             'required' => true,
         ],
         'shipping_country'        => [
+            'type' => 'anomaly.field_type.country',
             'required' => true,
             'config'   => [
                 'mode' => 'dropdown',
