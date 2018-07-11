@@ -2,6 +2,7 @@
 
 use Anomaly\CartsModule\Cart\Command\GetCart;
 use Anomaly\CheckoutsModule\Checkout\CheckoutService;
+use Anomaly\CheckoutsModule\Checkout\Contract\CheckoutRepositoryInterface;
 use Anomaly\CartsModule\Cart\Contract\CartInterface;
 use Anomaly\SelectFieldType\SelectFieldType;
 use Anomaly\ShippingModule\Method\Contract\MethodInterface;
@@ -36,13 +37,14 @@ class ShipmentMethods
         SelectFieldType $fieldType,
         ShippingResolver $resolver,
         ServiceManager $manager,
-        Currency $currency
+        Currency $currency,
+        CheckoutRepositoryInterface $checkouts
     ) {
         /* @var CheckoutService $checkout */
         $checkout = $manager->make('checkout');
 
         /* @var CartInterface $cart */
-        $cartInterface = $checkout->cart();
+        $cartInterface = $checkouts->findByStrId($session->get('checkout'))->getCart();
 
         $methods = $resolver->resolve($address = $cartInterface->getShippingAddress());
 
