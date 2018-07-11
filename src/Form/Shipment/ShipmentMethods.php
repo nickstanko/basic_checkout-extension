@@ -12,6 +12,7 @@ use Anomaly\StoreModule\Service\ServiceManager;
 use Anomaly\Streams\Platform\Support\Currency;
 use Anomaly\Streams\Platform\Support\Decorator;
 use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Session\Store;
 
 /**
  * Class ShipmentMethods
@@ -38,7 +39,8 @@ class ShipmentMethods
         ShippingResolver $resolver,
         ServiceManager $manager,
         Currency $currency,
-        CheckoutRepositoryInterface $checkouts
+        CheckoutRepositoryInterface $checkouts,
+        Store $session
     ) {
         /* @var CheckoutService $checkout */
         $checkout = $manager->make('checkout');
