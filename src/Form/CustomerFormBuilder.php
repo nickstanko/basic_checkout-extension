@@ -1,6 +1,6 @@
 <?php namespace Anomaly\BasicCheckoutExtension\Form;
 
-use Anomaly\CartsModule\Cart\CartModel;
+use Anomaly\OrdersModule\Order\OrderModel;
 use Anomaly\Streams\Platform\Ui\Form\FormBuilder;
 
 /**
@@ -18,7 +18,7 @@ class CustomerFormBuilder extends FormBuilder
      *
      * @var string
      */
-    protected $model = CartModel::class;
+    protected $model = OrderModel::class;
 
     /**
      * The form fields.
@@ -27,41 +27,27 @@ class CustomerFormBuilder extends FormBuilder
      */
     protected $fields = [
         'shipping_first_name'     => [
-            'label' => 'First Name',
-            'type' => 'anomaly.field_type.text',
             'required' => true,
         ],
         'shipping_last_name'      => [
-            'label' => 'Last Name',
-            'type' => 'anomaly.field_type.text',
             'required' => true,
         ],
         'shipping_street_address' => [
-            'label' => 'Street Address',
-            'type' => 'anomaly.field_type.text',
             'required' => true,
         ],
         'shipping_city'           => [
-            'label' => 'City',
-            'type' => 'anomaly.field_type.text',
             'required' => true,
         ],
         'shipping_state'          => [
-            'label' => 'State',
-            'type' => 'anomaly.field_type.state',
             'required' => true,
             'config'   => [
                 'mode' => 'dropdown',
             ],
         ],
         'shipping_postal_code'    => [
-            'label' => 'Zip Code',
-            'type' => 'anomaly.field_type.text',
             'required' => true,
         ],
         'shipping_country'        => [
-            'label' => 'Country',
-            'type' => 'anomaly.field_type.country',
             'required' => true,
             'config'   => [
                 'mode' => 'dropdown',
