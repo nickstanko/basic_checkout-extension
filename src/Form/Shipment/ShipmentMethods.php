@@ -38,7 +38,7 @@ class ShipmentMethods
         SelectFieldType $fieldType,
         ShippingResolver $resolver,
         Currency $currency,
-        CheckoutManager $manager;
+        CheckoutManager $manager,
         CheckoutRepositoryInterface $checkouts,
         Store $session
     ) {
