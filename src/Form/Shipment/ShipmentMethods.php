@@ -48,7 +48,7 @@ class ShipmentMethods
         /* @var CartInterface $cart */
         $cartInterface = $checkouts->findByStrId($session->get('checkout'))->getCart();
 
-        $methods = $resolver->resolve($address = $cartInterface->getShippingAddress());
+        $methods = $resolver->resolve($address = $cartInterface->getShipping());
 
         /* @var ShippableInterface $item */
         // @todo this should be an cart item
