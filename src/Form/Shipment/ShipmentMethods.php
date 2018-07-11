@@ -46,9 +46,12 @@ class ShipmentMethods
         $checkout = $manager->make('checkout');
 
         /* @var CartInterface $cart */
-        $cartInterface = $checkouts->findByStrId($session->get('checkout'))->getCart();
+        $checkoutInterface = $checkouts->findByStrId($session->get('checkout'));
+        
+        $cartInterface = $checkoutInterface->getCart();
+        $orderInterface = $checkoutInterface->getOrder();
 
-        $methods = $resolver->resolve($address = $cartInterface->getShipping());
+        $methods = $resolver->resolve($address = $orderInterface->getShippingAddress());
 
         /* @var ShippableInterface $item */
         // @todo this should be an cart item
