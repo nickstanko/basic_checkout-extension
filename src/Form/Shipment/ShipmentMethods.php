@@ -2,15 +2,16 @@
 
 use Anomaly\CartsModule\Cart\Command\GetCart;
 use Anomaly\CheckoutsModule\Checkout\CheckoutService;
+use Anomaly\CheckoutsModule\Checkout\Contract\CheckoutRepositoryInterface;
 use Anomaly\CartsModule\Cart\Contract\CartInterface;
 use Anomaly\SelectFieldType\SelectFieldType;
 use Anomaly\ShippingModule\Method\Contract\MethodInterface;
 use Anomaly\ShippingModule\Shipping\ShippingResolver;
 use Anomaly\ShippingModule\Shipping\Contract\ShippableInterface;
+use Anomaly\StoreModule\Service\ServiceManager;
 use Anomaly\Streams\Platform\Support\Currency;
 use Anomaly\Streams\Platform\Support\Decorator;
 use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Session\Store;
 
 /**
  * Class ShipmentMethods
@@ -35,14 +36,15 @@ class ShipmentMethods
     public function handle(
         SelectFieldType $fieldType,
         ShippingResolver $resolver,
-        Store $session,
-        Currency $currency
+        ServiceManager $manager,
+        Currency $currency,
+        CheckoutRepositoryInterface $checkouts
     ) {
         /* @var CheckoutService $checkout */
-        $checkout = $session->get('checkout');
+        $checkout = $manager->make('checkout');
 
         /* @var CartInterface $cart */
-        $cartInterface = $checkout->cart();
+        $cartInterface = $checkouts->findByStrId($session->get('checkout'))->getCart();
 
         $methods = $resolver->resolve($address = $cartInterface->getShippingAddress());
 
