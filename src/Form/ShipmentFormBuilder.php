@@ -17,7 +17,8 @@ use Anomaly\Streams\Platform\Ui\Form\FormBuilder;
  * @author Ryan Thompson <ryan@pyrocms.com>
  */
 class ShipmentFormBuilder extends FormBuilder
-{
+{ 
+    protected $model = null;
 
     /**
      * The form fields.
