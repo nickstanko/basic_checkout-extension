@@ -10,7 +10,7 @@
         {{ form('checkout.shipping')
         .entry(checkout.cart_id)
         .successMessage(false)
-        .redirect('checkout/billing')|raw }}
+        .redirect('checkout/billing').get()|raw }}
 
     </section>
 {% endblock %}
